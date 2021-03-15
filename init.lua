@@ -38,24 +38,28 @@ local function getid(pos)
 	local id = minetest.get_meta(pos):get_string(modname)
 	return id and id ~= "" and id
 end
+
 local digidcache = {}
 local function node_on_dig(pos, ...)
 	digidcache[hash(pos)] = getid(pos)
 	return minetest.node_dig(pos, ...)
 end
-local function node_after_dig(pos)
-	local id = digidcache[hash(pos)]
-	if not id then return end
-	for dy = -1, 1 do
-		for dx = -1, 1 do
-			for dz = -1, 1 do
-				local p = {
-					x = pos.x + dx,
-					y = pos.y + dy,
-					z = pos.z + dz
-				}
-				if getid(p) == id then
-					minetest.remove_node(p)
+local function get_node_after_dig(cb)
+	return function(pos)
+		local id = digidcache[hash(pos)]
+		if not id then return end
+		for dy = -1, 1 do
+			for dx = -1, 1 do
+				for dz = -1, 1 do
+					local p = {
+						x = pos.x + dx,
+						y = pos.y + dy,
+						z = pos.z + dz
+					}
+					if getid(p) == id then
+						minetest.remove_node(p)
+						if cb then cb(p) end
+					end
 				end
 			end
 		end
@@ -158,7 +162,7 @@ local function registercore(def, typedesc, stairpart)
 			description = string_gsub(basedef.description,
 				"Bricks", "Brick") .. " " .. typedesc,
 			on_dig = node_on_dig,
-			after_dig_node = node_after_dig,
+			after_dig_node = get_node_after_dig(),
 			on_place = get_node_place(stairpart, stairname),
 			drop = itemname
 		})
@@ -177,7 +181,7 @@ local function registercore(def, typedesc, stairpart)
 			node_box = nodebox,
 			tiles = imgdouble(basedef.tiles),
 			on_dig = node_on_dig,
-			after_dig_node = node_after_dig,
+			after_dig_node = get_node_after_dig(),
 			on_place = get_node_place(stairpart, stairname)
 		})
 	nodecore.underride(itemdef, basedef)
@@ -213,8 +217,28 @@ local function registercore(def, typedesc, stairpart)
 			end
 		})
 
-		minetest.register_abm({
-			label = "fix misplaced " .. stairname,
+	nodecore.register_craft({
+			label = "recycle " .. string_lower(stairdef.description),
+			action = "pummel",
+			toolgroups = {choppy = 3},
+			nodes = {
+				{match = stairname, replace = "air"}
+			},
+			items = {
+				{name = def.recipenode, scatter = 5}
+			},
+			check = function(pos)
+				local id = getid(pos)
+				digidcache[hash(pos)] = id
+				return id
+			end,
+			after = get_node_after_dig(function(p)
+					return nodecore.item_eject(p, def.recipenode, 5)
+				end)
+		})
+
+	minetest.register_abm({
+			label = "fix misplaced " .. string_lower(stairdef.description),
 			nodenames = {itemname},
 			interval = 1,
 			chance = 1,
