@@ -180,7 +180,6 @@ local function registercore(def, typedesc, stairpart)
 			after_dig_node = node_after_dig,
 			on_place = get_node_place(stairpart, stairname)
 		})
-	print(dump(itemdef.tiles))
 	nodecore.underride(itemdef, basedef)
 	minetest.register_node(":" .. itemname, itemdef)
 
@@ -211,6 +210,17 @@ local function registercore(def, typedesc, stairpart)
 					setid(data.rel(1, 0, 0), basepos)
 					setid(data.rel(1, 0, 1), basepos)
 				end
+			end
+		})
+
+		minetest.register_abm({
+			label = "fix misplaced " .. stairname,
+			nodenames = {itemname},
+			interval = 1,
+			chance = 1,
+			action = function(pos)
+				minetest.remove_node(pos)
+				nodecore.place_stack(pos, itemname)
 			end
 		})
 end
