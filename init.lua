@@ -202,7 +202,6 @@ local function registercore(def, typedesc, stairpart)
 			indexkeys = {"nc_tree:eggcorn"},
 			action = "pummel",
 			toolgroups = {thumpy = 2},
-			normal = {y = 1},
 			nodes = staircraftnodes(),
 			after = function(_, data)
 				local basepos = data.rel(0, -1, 0)
