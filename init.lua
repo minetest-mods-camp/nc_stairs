@@ -255,8 +255,6 @@ end
 
 register({recipenode = "nc_lode:block_annealed"})
 register({recipenode = "nc_lode:block_tempered"})
-register({recipenode = "nc_optics:glass"})
-register({recipenode = "nc_optics:glass_float"})
 register({recipenode = "nc_optics:glass_opaque"})
 register({recipenode = "nc_stonework:bricks_adobe_bonded"})
 register({recipenode = "nc_stonework:bricks_coalstone_bonded"})
