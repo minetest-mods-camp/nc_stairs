@@ -161,10 +161,11 @@ local function registercore(def, typedesc, stairpart)
 	nodecore.underride(stairdef, {
 			description = string_gsub(basedef.description,
 				"Bricks", "Brick") .. " " .. typedesc,
+			drop = itemname,
+			groups = {stone_bricks = 0},
 			on_dig = node_on_dig,
 			after_dig_node = get_node_after_dig(),
-			on_place = get_node_place(stairpart, stairname),
-			drop = itemname
+			on_place = get_node_place(stairpart, stairname)
 		})
 	nodecore.underride(stairdef, basedef)
 	minetest.register_node(":" .. stairname, stairdef)
@@ -180,6 +181,7 @@ local function registercore(def, typedesc, stairpart)
 			drawtype = "nodebox",
 			node_box = nodebox,
 			tiles = imgdouble(basedef.tiles),
+			groups = {stone_bricks = 0},
 			on_dig = node_on_dig,
 			after_dig_node = get_node_after_dig(),
 			on_place = get_node_place(stairpart, stairname)
