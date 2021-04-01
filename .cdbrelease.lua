@@ -19,7 +19,7 @@ readbinary = readbinary or function() end
 return {
 	pkg = "nc_stairs",
 	version = stamp .. "-$Format:%h$",
-	type = "game",
+	type = "mod",
 	title = "NodeCore Stairs",
 	short_description = "Adds an assortment of stairs and slabs to NodeCore",
 	tags = {"building", "crafting", "decorative"},
