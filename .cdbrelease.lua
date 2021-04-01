@@ -21,7 +21,7 @@ return {
 	version = stamp .. "-$Format:%h$",
 	type = "game",
 	title = "NodeCore Stairs",
-	short_description = "Adds an assortment of stairs and slabs to NodeCore.",
+	short_description = "Adds an assortment of stairs and slabs to NodeCore",
 	tags = {"building", "crafting", "decorative"},
 	content_warnings = {},
 	license = "MIT",
