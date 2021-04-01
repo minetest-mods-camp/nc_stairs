@@ -1,0 +1,5 @@
+.cdbrelease.lua	export-subst
+.cdb-*		export-ignore
+.icon.png	export-ignore
+.git*		export-ignore
+.lua*		export-ignore
