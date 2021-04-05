@@ -108,7 +108,6 @@ local function get_node_place(stairpart, nodename)
 			if (not nodecore.buildable_to(v)) or nodecore.obstructed(v)
 			or (placer and placer:is_player() and minetest.is_protected(pos,
 					placer:get_player_name())) then
-				minetest.chat_send_all(minetest.pos_to_string(pos) .. minetest.pos_to_string(v))
 				return stack
 			end
 		end
