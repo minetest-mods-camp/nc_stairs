@@ -20,6 +20,7 @@ return {
 	pkg = "nc_stairs",
 	version = stamp .. "-$Format:%h$",
 	type = "mod",
+	dev_state = "MAINTENANCE_ONLY",
 	title = "NodeCore Stairs",
 	short_description = "Adds an assortment of stairs and slabs to NodeCore",
 	tags = {"building", "crafting", "decorative"},
