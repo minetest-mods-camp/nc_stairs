@@ -164,7 +164,8 @@ local function registercore(def, typedesc, stairpart)
 			groups = {stone_bricks = 0},
 			on_dig = node_on_dig,
 			after_dig_node = get_node_after_dig(),
-			on_place = get_node_place(stairpart, stairname)
+			on_place = get_node_place(stairpart, stairname),
+			silktouch = false
 		})
 	nodecore.underride(stairdef, basedef)
 	stairdef.drop_in_place = nil
