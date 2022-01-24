@@ -167,6 +167,7 @@ local function registercore(def, typedesc, stairpart)
 			on_place = get_node_place(stairpart, stairname)
 		})
 	nodecore.underride(stairdef, basedef)
+	stairdef.drop_in_place = nil
 	minetest.register_node(":" .. stairname, stairdef)
 
 	local itemdef = nodecore.underride({}, def)
@@ -183,9 +184,11 @@ local function registercore(def, typedesc, stairpart)
 			groups = {stone_bricks = 0},
 			on_dig = node_on_dig,
 			after_dig_node = get_node_after_dig(),
-			on_place = get_node_place(stairpart, stairname)
+			on_place = get_node_place(stairpart, stairname),
+			node_placement_prediction = stairname
 		})
 	nodecore.underride(itemdef, basedef)
+	itemdef.drop_in_place = nil
 	minetest.register_node(":" .. itemname, itemdef)
 
 	local staircraftnodes = recipebase()
