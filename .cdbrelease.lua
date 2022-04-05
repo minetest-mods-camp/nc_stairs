@@ -23,7 +23,7 @@ return {
 	dev_state = "MAINTENANCE_ONLY",
 	title = "NodeCore Stairs",
 	short_description = "Adds an assortment of stairs and slabs to NodeCore",
-	tags = {"building", "crafting", "decorative"},
+	tags = {"april_fools", "building", "crafting", "decorative"},
 	content_warnings = {},
 	license = "MIT",
 	media_license = "MIT",
