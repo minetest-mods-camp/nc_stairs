@@ -39,6 +39,10 @@ local function getid(pos)
 	return id and id ~= "" and id
 end
 
+local function node_can_dig(pos)
+	return not nodecore.near_unloaded(pos, nil, 2)
+end
+
 local digidcache = {}
 local function node_on_dig(pos, ...)
 	digidcache[hash(pos)] = getid(pos)
@@ -70,7 +74,7 @@ local function get_node_place(stairpart, nodename)
 	return function(stack, placer, pointed)
 		local pos = nodecore.buildable_to(pointed.under) and pointed.under
 		or nodecore.buildable_to(pointed.above) and pointed.above
-		if nodecore.protection_test(pos, placer) then return end
+		if nodecore.near_unloaded(pos, nil, 2) or nodecore.protection_test(pos, placer) then return end
 
 		local rela, relb
 		local look = placer:get_look_dir()
@@ -171,6 +175,7 @@ local function registercore(def, typedesc, stairpart)
 			description = string_gsub(basedef.description,
 				"Bricks", "Brick") .. " " .. typedesc,
 			drop = itemname,
+			can_dig = node_can_dig,
 			on_dig = node_on_dig,
 			after_dig_node = get_node_after_dig(),
 			on_place = get_node_place(stairpart, stairname),
@@ -192,6 +197,7 @@ local function registercore(def, typedesc, stairpart)
 			drawtype = "nodebox",
 			node_box = nodebox,
 			tiles = imgdouble(basedef.tiles),
+			can_dig = node_can_dig,
 			on_dig = node_on_dig,
 			after_dig_node = get_node_after_dig(),
 			on_place = get_node_place(stairpart, stairname),
@@ -218,6 +224,7 @@ local function registercore(def, typedesc, stairpart)
 			action = "pummel",
 			toolgroups = {thumpy = 2},
 			nodes = staircraftnodes(),
+			check = node_can_dig,
 			after = function(_, data)
 				local basepos = data.rel(0, -1, 0)
 				setid(basepos, basepos)
@@ -242,6 +249,7 @@ local function registercore(def, typedesc, stairpart)
 				{name = def.recipenode, scatter = 5}
 			},
 			check = function(pos)
+				if not node_can_dig(pos) then return end
 				local id = getid(pos)
 				digidcache[hash(pos)] = id
 				return id
