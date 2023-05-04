@@ -143,6 +143,16 @@ local function imgdouble(thing, key)
 	return thing
 end
 
+local function cleangroups(def)
+	local oldgroups = def.groups or {}
+	def.groups = {}
+	for k, v in pairs(oldgroups) do
+		if nodecore.tool_basetimes[k] then
+			def.groups[k] = v
+		end
+	end
+end
+
 local function registercore(def, typedesc, stairpart)
 	local typename = string_lower(typedesc)
 
@@ -161,13 +171,13 @@ local function registercore(def, typedesc, stairpart)
 			description = string_gsub(basedef.description,
 				"Bricks", "Brick") .. " " .. typedesc,
 			drop = itemname,
-			groups = {stone_bricks = 0},
 			on_dig = node_on_dig,
 			after_dig_node = get_node_after_dig(),
 			on_place = get_node_place(stairpart, stairname),
 			silktouch = false
 		})
 	nodecore.underride(stairdef, basedef)
+	cleangroups(stairdef)
 	stairdef.drop_in_place = nil
 	minetest.register_node(":" .. stairname, stairdef)
 
@@ -182,13 +192,13 @@ local function registercore(def, typedesc, stairpart)
 			drawtype = "nodebox",
 			node_box = nodebox,
 			tiles = imgdouble(basedef.tiles),
-			groups = {stone_bricks = 0},
 			on_dig = node_on_dig,
 			after_dig_node = get_node_after_dig(),
 			on_place = get_node_place(stairpart, stairname),
 			node_placement_prediction = stairname
 		})
 	nodecore.underride(itemdef, basedef)
+	cleangroups(itemdef)
 	itemdef.drop_in_place = nil
 	minetest.register_node(":" .. itemname, itemdef)
 
